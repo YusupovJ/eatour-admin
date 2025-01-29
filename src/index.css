@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-form-item .ant-form-item-label > label::before {
+  content: "" !important;
+}
+html,
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.ant-form-item .ant-form-item-label > label {
+  color: #3d3bff;
+}
+
+.ant-form-item .ant-form-item-label > label::before {
+  content: "" !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  margin: 3px;
+  padding: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.ML__keyboard {
+  z-index: 9999 !important;
+}
+
+.ant-list-item {
+  cursor: pointer;
+}
+
+.ant-list-item:hover {
+  background-color: #f0f0f0;
+}
