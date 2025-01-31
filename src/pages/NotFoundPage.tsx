@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+
   return (
     <Result
       status="404"
@@ -16,4 +17,5 @@ const NotFoundPage = () => {
     />
   );
 };
+
 export default NotFoundPage;

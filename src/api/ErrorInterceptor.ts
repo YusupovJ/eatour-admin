@@ -1,4 +1,6 @@
+import { fetchRefresh } from "@services/auth";
 import { message } from "antd";
+import { Api } from "./axios";
 
 export const errorInterceptor = async (error: any) => {
   const originalConfig = error.config;
@@ -11,9 +13,14 @@ export const errorInterceptor = async (error: any) => {
   const refreshToken = localStorage.getItem("refreshToken");
 
   if (error.response.status === 401 && refreshToken !== null && !originalConfig._retry) {
-    /* Refersh logic */
-  } else if (error.response?.data.message === "INVALID_JWT") {
-    window.location.href = "/logout";
+    originalConfig._retry = true;
+
+    const data = await fetchRefresh(refreshToken);
+
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+
+    return Api.request(originalConfig);
   }
 
   return Promise.reject(error);

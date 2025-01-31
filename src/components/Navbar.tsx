@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
-import { menuData } from "@constants/menuData";
-import { Icons } from "@constants/icons";
 
 import Sider from "antd/es/layout/Sider";
+import { Icons } from "@constants/icons";
+import { menuData } from "@constants/menuData";
 
 const Navbar: FC = () => {
   return (

@@ -39,10 +39,6 @@ body {
   background: #555;
 }
 
-.ML__keyboard {
-  z-index: 9999 !important;
-}
-
 .ant-list-item {
   cursor: pointer;
 }

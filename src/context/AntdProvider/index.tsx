@@ -6,7 +6,7 @@ const AntdProvider: FC<PropsWithChildren> = ({ children }) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#d4380d",
+          colorPrimary: "#F3582D",
           borderRadius: 6,
         },
         components: {

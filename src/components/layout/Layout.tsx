@@ -1,11 +1,14 @@
 import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "../Navbar";
 import HeaderSide from "../Header";
+import { useAuthStore } from "@context/AuthProvider/store";
 
 const { Header, Content } = Layout;
 
 const LayoutPage: React.FC = () => {
+  const { isAuth } = useAuthStore();
+
   return (
     <div>
       <Layout>
@@ -27,7 +30,7 @@ const LayoutPage: React.FC = () => {
               height: "calc(100vh - 64px)",
             }}
           >
-            <Outlet />
+            {isAuth ? <Outlet /> : <Navigate to="/login" />}
           </Content>
         </Layout>
       </Layout>
