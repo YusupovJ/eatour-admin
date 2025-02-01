@@ -1,3 +1,5 @@
+import { UseQueryOptions } from "react-query";
+
 export interface IApiResponse<T> {
   data: T;
   pagination: IPagination | null;
@@ -10,10 +12,13 @@ export interface IRoot {
 }
 export interface IPagination {
   page: number;
-  limit: number | null;
+  limit?: number;
   skip: number;
   totalPages: number;
   total: number;
+}
+export interface IAdmin extends IRoot {
+  login: string;
 }
 
 export interface IMenu {
@@ -36,3 +41,5 @@ export interface ITokens {
   accessToken: string;
   refreshToken: string;
 }
+
+export type QueryOptions = Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, "queryKey" | "queryFn">;

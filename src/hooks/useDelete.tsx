@@ -38,14 +38,14 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
     },
   });
 
-  const showDeleteConfirm = (id: string, deleteName: string, errorMessage: string, key?: "variant") => {
+  const showDeleteConfirm = (id: string | number, deleteName: string, errorMessage: string, key?: "variant") => {
     const res = confirm({
-      title: "Buni oʻchirib tashlaysizmi?",
+      title: "Do you want to delete it?",
       icon: <ExclamationCircleFilled />,
       content: deleteName,
-      okText: "Ha",
+      okText: "Yes",
       okType: "danger",
-      cancelText: "Yo'q",
+      cancelText: "No",
       cancelButtonProps: {
         onClick: () => {
           res.update((config) => ({
@@ -62,31 +62,22 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
           }));
 
           mutate(id, {
-            onSuccess: (data) => {
-              if (data.success) {
-                message.success(`${deleteName} o'chirildi`);
-                if (getUrlKey !== undefined) {
-                  queryClient.invalidateQueries(getUrlKey);
-                }
+            onSuccess: () => {
+              message.success(`${deleteName} removed`);
+              if (getUrlKey !== undefined) {
+                queryClient.invalidateQueries(getUrlKey);
+              }
 
-                res.update((config) => ({
-                  ...controlLoadingAndDisbled(config, false),
-                  open: false,
-                }));
-                if (key !== undefined) {
-                  navigation("/variants");
-                }
-              } else {
-                console.error(data.error, "🔥");
-                message.error("Nimadir hato ketti consolga qarang");
-
-                res.update((config) => controlLoadingAndDisbled(config, false));
+              res.update((config) => ({
+                ...controlLoadingAndDisbled(config, false),
+                open: false,
+              }));
+              if (key !== undefined) {
+                navigation("/variants");
               }
             },
-            onError: (error) => {
-              console.error(error, "🔥");
-              message.error(`${errorMessage}`);
-
+            onError: () => {
+              message.error(errorMessage);
               res.update((config) => controlLoadingAndDisbled(config, false));
             },
           });
@@ -96,7 +87,7 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
     });
   };
 
-  const deleteItem = (id: string, name: string, errorMessage: string, key?: "variant") => {
+  const deleteItem = (id: string | number, name: string, errorMessage: string, key?: "variant") => {
     showDeleteConfirm(id, name, errorMessage, key);
   };
 

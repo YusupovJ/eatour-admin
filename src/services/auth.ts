@@ -1,7 +1,7 @@
 import { Api } from "@api/axios";
 import { baseURL, urls } from "@constants/urls";
 import axios from "axios";
-import { IApiResponse, ILogin, ITokens } from "src/types";
+import { IAdmin, IApiResponse, ILogin, ITokens } from "src/types";
 
 export const fetchLogin = async (dto: ILogin) => {
   const res = await Api.post<void, IApiResponse<ITokens>>(urls.admin.login, dto);
@@ -18,4 +18,13 @@ export const fetchRefresh = async (refreshToken: string) => {
 export const fetchLogout = async () => {
   const res = await Api.post<void, IApiResponse<string>>(urls.admin.logout);
   return res.data;
+};
+
+export const fetchAllAdmins = async () => {
+  return await Api.get<void, IApiResponse<IAdmin[]>>(urls.admin.getAll, {
+    params: {
+      page: 1,
+      limit: 15,
+    },
+  });
 };

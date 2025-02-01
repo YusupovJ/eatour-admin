@@ -1,18 +1,19 @@
+import { useCreate } from "@api/index";
 import { Icons } from "@constants/icons";
+import { urls } from "@constants/urls";
 import { useAuthStore } from "@context/AuthProvider/store";
-import { useLogin } from "@hooks/useAuth";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import { ILogin } from "src/types";
+import { ILogin, ITokens } from "src/types";
 
 const Login = () => {
-  const { mutate } = useLogin();
+  const { mutate } = useCreate<ILogin, ITokens>(urls.admin.login);
   const { auth } = useAuthStore();
   const navigate = useNavigate();
 
   const onFinish = async (values: ILogin) => {
     mutate(values, {
-      onSuccess: (data) => {
+      onSuccess: ({ data }) => {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
         auth();

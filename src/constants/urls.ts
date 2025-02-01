@@ -13,6 +13,6 @@ export const urls = {
     login: "/admin/login",
     logout: "/admin/logout",
     refresh: "/admin/refresh",
-    delete: (id: number) => `/admin/${id}`,
+    delete: "/admin",
   },
 };

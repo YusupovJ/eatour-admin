@@ -1,4 +1,5 @@
 import LayoutPage from "@components/layout/Layout";
+import AdminsPage from "@pages/admins";
 import Login from "@pages/LoginPage";
 import NotFoundPage from "@pages/NotFoundPage";
 import { createBrowserRouter } from "react-router-dom";
@@ -13,6 +14,11 @@ export const router = createBrowserRouter([
     element: <LayoutPage />,
     errorElement: <NotFoundPage />,
     loader: () => null,
-    children: [],
+    children: [
+      {
+        path: "/",
+        element: <AdminsPage />,
+      },
+    ],
   },
 ]);

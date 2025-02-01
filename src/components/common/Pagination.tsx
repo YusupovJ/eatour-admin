@@ -21,7 +21,7 @@ const CustomPagination: FC<IPagination> = ({ total, limit }) => {
   };
   return (
     <div className="flex justify-center my-[20px]">
-      <Pagination total={total} current={currentPage} onChange={handleChange} pageSize={limit} />
+      <Pagination total={total} hideOnSinglePage current={currentPage} onChange={handleChange} pageSize={limit} />
     </div>
   );
 };

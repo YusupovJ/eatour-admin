@@ -1,20 +1,20 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useQuery, useMutation } from "react-query";
 import { handleEncrypted } from "@lib/encrypt";
 import { Api, MediaApi } from "./axios";
+import { IApiResponse, QueryOptions } from "src/types";
 
 interface IEditData<T> {
   url: string;
   item: T;
 }
 
-const useGetList = <T>(key: string | [string, string], url: string) => {
+const useGetList = <T>(key: string, url: string, config?: AxiosRequestConfig, options?: QueryOptions) => {
   const get = async () => {
-    const urlQuery = Array.isArray(key) ? url + key[1] : url;
-    const data: T = await Api.get(`${urlQuery}`);
+    const data = await Api.get<void, IApiResponse<T>>(url, config);
     return data;
   };
-  return useQuery(key, () => get());
+  return useQuery(key, () => get(), options);
 };
 
 const useCustomGetQuery = <T>(key: string | [string, string], url: string) => {
@@ -27,8 +27,8 @@ const useCustomGetQuery = <T>(key: string | [string, string], url: string) => {
 };
 
 const useCreate = <T, U, V = Error>(url: string) => {
-  return useMutation<U, AxiosError<V>, T>(async (body) => {
-    const data: U = await Api.post(url, body);
+  return useMutation<IApiResponse<U>, AxiosError<V>, T>(async (body) => {
+    const data = await Api.post<void, IApiResponse<U>>(url, body);
     return data;
   });
 };

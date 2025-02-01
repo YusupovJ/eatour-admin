@@ -1,17 +1,18 @@
 import { Icons } from "@constants/icons";
 import { useAuthStore } from "@context/AuthProvider/store";
-import { useLogout } from "@hooks/useAuth";
 import { Button } from "antd";
 import Confirmation from "./common/Confirmation";
 import useModalView from "@hooks/useModal";
+import { useCreate } from "@api/index";
+import { urls } from "@constants/urls";
 
 const Logout = () => {
-  const { mutate } = useLogout();
+  const { mutate } = useCreate<null, string>(urls.admin.logout);
   const { logout } = useAuthStore();
-  const { open, openModal, closeModal } = useModalView();
+  const [open, openModal, closeModal] = useModalView();
 
   const onLogout = () => {
-    mutate(undefined, {
+    mutate(null, {
       onSettled() {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");

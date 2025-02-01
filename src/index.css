@@ -2,20 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-.ant-form-item .ant-form-item-label > label::before {
-  content: "" !important;
-}
 html,
 body {
   font-family: "Inter", sans-serif;
 }
 
 .ant-form-item .ant-form-item-label > label {
-  color: #3d3bff;
+  font-size: 1.05rem;
 }
-
-.ant-form-item .ant-form-item-label > label::before {
+.ant-form-item .ant-form-item-label > label::before,
+.ant-form-item .ant-form-item-label > label::after {
   content: "" !important;
+  display: none !important;
 }
 
 ::-webkit-scrollbar {
