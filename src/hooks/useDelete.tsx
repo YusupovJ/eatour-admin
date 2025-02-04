@@ -4,7 +4,6 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 
 import type { ModalFuncProps } from "antd";
 import { useDeleteApi } from "@api/index";
-import { useNavigate } from "react-router-dom";
 
 const { confirm } = Modal;
 
@@ -22,7 +21,6 @@ interface IDelete {
 }
 
 const useDelete = (deleteUrl: string, getUrlKey?: string) => {
-  const navigation = useNavigate();
   const queryClient = useQueryClient();
   const { mutate } = useDeleteApi<IDelete>(deleteUrl);
 
@@ -38,14 +36,14 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
     },
   });
 
-  const showDeleteConfirm = (id: string | number, deleteName: string, errorMessage: string, key?: "variant") => {
+  const showDeleteConfirm = (id: string | number, deleteName: string) => {
     const res = confirm({
-      title: "Do you want to delete it?",
+      title: "Buni o'chirib tashlamoqchimisiz?",
       icon: <ExclamationCircleFilled />,
       content: deleteName,
-      okText: "Yes",
+      okText: "Ha",
       okType: "danger",
-      cancelText: "No",
+      cancelText: "Yoq",
       cancelButtonProps: {
         onClick: () => {
           res.update((config) => ({
@@ -63,7 +61,7 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
 
           mutate(id, {
             onSuccess: () => {
-              message.success(`${deleteName} removed`);
+              message.success(`${deleteName} o'chirildi`);
               if (getUrlKey !== undefined) {
                 queryClient.invalidateQueries(getUrlKey);
               }
@@ -72,12 +70,9 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
                 ...controlLoadingAndDisbled(config, false),
                 open: false,
               }));
-              if (key !== undefined) {
-                navigation("/variants");
-              }
             },
             onError: () => {
-              message.error(errorMessage);
+              message.error("O'chirish vaqtida xatolik yuz berdi");
               res.update((config) => controlLoadingAndDisbled(config, false));
             },
           });
@@ -87,8 +82,8 @@ const useDelete = (deleteUrl: string, getUrlKey?: string) => {
     });
   };
 
-  const deleteItem = (id: string | number, name: string, errorMessage: string, key?: "variant") => {
-    showDeleteConfirm(id, name, errorMessage, key);
+  const deleteItem = (id: string | number, name: string) => {
+    showDeleteConfirm(id, name);
   };
 
   return { deleteItem };

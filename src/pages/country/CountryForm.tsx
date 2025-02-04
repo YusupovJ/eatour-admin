@@ -1,4 +1,5 @@
 import { useCreate, useUpdate } from "@api/index";
+import FileUploader from "@components/common/FileUploder";
 import { KeysEnum } from "@constants/keys";
 import { urls } from "@constants/urls";
 import { IEditData } from "@hooks/useEditData";
@@ -6,6 +7,8 @@ import { Button, Drawer, Form, Input, message, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { ICountry } from "src/types";
 
 interface Props {
@@ -26,7 +29,7 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
 
   const closeHandler = () => {
     onClose();
-    form.resetFields(["name"]);
+    form.resetFields(["name", "image", "description"]);
     editData.setEditData(null);
   };
 
@@ -45,7 +48,7 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
         },
         {
           onSuccess() {
-            message.success("Country updated!");
+            message.success("Mamlakat yangilandi!");
             queryClient.refetchQueries(KeysEnum.GET_ALL_COUNTRIES);
             closeHandler();
           },
@@ -55,7 +58,7 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
     }
     create(values, {
       onSuccess: () => {
-        message.success("Country created!");
+        message.success("Mamlakat yaratildi!");
         queryClient.refetchQueries(KeysEnum.GET_ALL_COUNTRIES);
         closeHandler();
       },
@@ -65,7 +68,7 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
   return (
     <>
       <Drawer
-        title={`${editData.data ? "Update" : "Create"} country`}
+        title={editData.data ? "Yangilash" : "Yaratish"}
         width={600}
         onClose={closeHandler}
         open={open}
@@ -76,15 +79,21 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
         }}
       >
         <Form layout="vertical" form={form} onFinish={onSubmit}>
-          <Form.Item name="name" label="Country name" rules={[{ required: true, message: "Name is required" }]}>
-            <Input placeholder="Enter a name" />
+          <Form.Item name="name" label="Mamlakat nomi" rules={[{ required: true, message: "Nomini kiriting" }]}>
+            <Input placeholder="Mamlakat nomi" />
+          </Form.Item>
+          <Form.Item name="description" label="Tavsif" rules={[{ required: true, message: "Tavsifni kiriting" }]}>
+            <ReactQuill theme="snow" className="rounded" />
+          </Form.Item>
+          <Form.Item name="image">
+            <FileUploader form={form} name="image" />
           </Form.Item>
           <Space className="mt-5">
             <Button htmlType="reset" onClick={onClose}>
-              Cancel
+              Bekor qilish
             </Button>
             <Button htmlType="submit" type="primary">
-              Submit
+              Yuborish
             </Button>
           </Space>
         </Form>

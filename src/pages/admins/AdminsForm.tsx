@@ -19,7 +19,7 @@ const AdminsForm = ({ onClose, open }: Props) => {
   const onSubmit = (values: ILogin) => {
     create(values, {
       onSuccess: () => {
-        message.success("Admin created!");
+        message.success("Admin yaratildi!");
         queryClient.refetchQueries(KeysEnum.GET_ALL_ADMINS);
         onClose();
         form.resetFields(["login", "password"]);
@@ -30,7 +30,7 @@ const AdminsForm = ({ onClose, open }: Props) => {
   return (
     <>
       <Drawer
-        title="Create a new administrator"
+        title="Admin yaratish"
         width={600}
         onClose={onClose}
         open={open}
@@ -41,25 +41,25 @@ const AdminsForm = ({ onClose, open }: Props) => {
         }}
       >
         <Form layout="vertical" form={form} onFinish={onSubmit}>
-          <Form.Item name="login" label="Login" rules={[{ required: true, message: "Please enter login" }]}>
-            <Input placeholder="Enter a login" />
+          <Form.Item name="login" label="Login" rules={[{ required: true, message: "Login majburiy" }]}>
+            <Input placeholder="Login" />
           </Form.Item>
           <Form.Item
             name="password"
-            label="Password"
+            label="Parol"
             rules={[
-              { required: true, message: "Password is required" },
-              { min: 6, message: "Password must contain at least 6 characters" },
+              { required: true, message: "Parol majburiy" },
+              { min: 6, message: "Parol kamida 6 ta harfdan iborat bo'lishi kerak" },
             ]}
           >
-            <Input.Password placeholder="Enter a password" />
+            <Input.Password placeholder="Parolni kiriting" />
           </Form.Item>
           <Space className="mt-5">
             <Button htmlType="reset" onClick={onClose}>
-              Cancel
+              Bekor qilish
             </Button>
             <Button htmlType="submit" type="primary">
-              Submit
+              Yuborish
             </Button>
           </Space>
         </Form>

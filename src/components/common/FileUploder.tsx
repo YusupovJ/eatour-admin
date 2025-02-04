@@ -1,10 +1,11 @@
 import { useState, useId, useEffect } from "react";
-import { Form, message, Modal, Upload } from "antd";
+import { Modal, Upload, message } from "antd";
 import type { FormInstance, UploadFile } from "antd";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 import { urls } from "@constants/urls";
 import useModalView from "@hooks/useModal";
 import { useCreateMedia, useDeleteMedia } from "@api/index";
+import { useWatch } from "antd/es/form/Form";
 
 interface IImageUpload {
   name: string;
@@ -23,12 +24,13 @@ interface IDeleteMediaPost {
 }
 
 const FileUploader = ({ form, name }: IImageUpload) => {
-  const IMAGE_UPLOAD_CLIENT = "ebilim";
+  const IMAGE_UPLOAD_CLIENT = import.meta.env.VITE_IMAGE_UPLOAD_CLIENT;
   const ID = useId();
 
   const { mutate, isLoading: uploadLoading } = useCreateMedia<FormData, IImageUploadResponse>(urls.media.create);
 
   const { mutate: deleteMutate, isLoading: deleteLoading } = useDeleteMedia<IDeleteMediaPost>(urls.media.delete);
+
   const [deleteModalOpen, deleteModalOnOpen, deleteModalOnClose] = useModalView();
   const [deleteKey, setDeleteKey] = useState<string | null>(null);
 
@@ -89,26 +91,28 @@ const FileUploader = ({ form, name }: IImageUpload) => {
     );
   };
 
+  const url = useWatch([name], form);
+
+  useEffect(() => {
+    const url = form.getFieldValue(name);
+
+    if (url) {
+      setFileList([
+        {
+          uid: ID,
+          status: "done",
+          name: url,
+          url: url,
+        },
+      ]);
+    }
+  }, [url]);
+
   const uploadButton = (
     <div className="upload-file">
       <p>{uploadLoading ? "Loading" : "+ Fayl yuklash"}</p>
     </div>
   );
-
-  const IMAGE_URL = Form.useWatch(name, form);
-
-  useEffect(() => {
-    if (typeof IMAGE_URL === "string" && !!IMAGE_URL.trim()) {
-      setFileList([
-        {
-          uid: ID,
-          status: "done",
-          name: IMAGE_URL,
-          url: IMAGE_URL,
-        },
-      ]);
-    }
-  }, [IMAGE_URL, ID]);
 
   return (
     <>

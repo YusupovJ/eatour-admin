@@ -8,9 +8,9 @@ interface Props {
 const CountryHeader = ({ onOpen }: Props) => {
   return (
     <div className="mb-4 p-5 flex justify-between items-center bg-white rounded">
-      <h1 className="font-bold text-xl">List of countries</h1>
+      <h1 className="font-bold text-xl">Mamlakatlar ro'yxati</h1>
       <Button type="primary" onClick={onOpen}>
-        <PlusIcon /> Create
+        <PlusIcon /> Yaratish
       </Button>
     </div>
   );

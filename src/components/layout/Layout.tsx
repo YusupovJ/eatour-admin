@@ -27,7 +27,7 @@ const LayoutPage: React.FC = () => {
           <Content
             style={{
               margin: "16px 16px 0 270px",
-              height: "calc(100vh - 64px)",
+              height: "calc(100vh - 85px)",
             }}
           >
             {isAuth ? <Outlet /> : <Navigate to="/login" />}

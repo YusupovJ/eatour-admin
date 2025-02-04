@@ -1,29 +1,23 @@
 import { IData } from "src/types";
-import { MapPin, UserIcon } from "lucide-react";
+import { Globe2, MapPin, UserIcon } from "lucide-react";
 
 export const menuData: IData[] = [
   {
     id: 1,
-    title: "Administrators",
+    title: "Adminlar",
     path: "/",
     icon: <UserIcon />,
   },
   {
     id: 2,
-    title: "Places",
+    icon: <Globe2 />,
+    title: "Mamlakatlar",
+    path: "/country",
+  },
+  {
+    id: 3,
     icon: <MapPin />,
-    path: "",
-    children: [
-      {
-        id: 2.1,
-        title: "Countries",
-        path: "/country",
-      },
-      {
-        id: 2.2,
-        title: "Cities",
-        path: "/city",
-      },
-    ],
+    title: "Shaharlar",
+    path: "/city",
   },
 ];

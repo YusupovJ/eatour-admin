@@ -24,10 +24,10 @@ const Logout = () => {
   return (
     <>
       <Button onClick={openModal} type="primary">
-        <Icons.logout fill="white" /> Log out
+        <Icons.logout fill="white" /> Chiqish
       </Button>
-      <Confirmation onConfirm={onLogout} isOpen={open} onCancel={closeModal}>
-        Are you sure that you want to log out your account?
+      <Confirmation onConfirm={onLogout} isOpen={open} okayText="Chiqish" onCancel={closeModal}>
+        Haqiqatan ham hisobingizdan chiqmoqchimisiz?
       </Confirmation>
     </>
   );

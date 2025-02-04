@@ -22,6 +22,8 @@ export interface IAdmin extends IRoot {
 }
 export interface ICountry extends IRoot {
   name: string;
+  description: string;
+  image: string;
 }
 
 export interface IMenu {

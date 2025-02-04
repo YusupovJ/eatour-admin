@@ -10,8 +10,16 @@ interface Props extends PropsWithChildren {
 
 const Confirmation = ({ isOpen, onConfirm, children, okayText, onCancel }: Props) => {
   return (
-    <Modal centered open={isOpen} className="confirm" onOk={onConfirm} okText={okayText || "Yes"} onCancel={onCancel}>
-      <h3 className="text-xl font-bold mb-3">Confirmation</h3>
+    <Modal
+      centered
+      open={isOpen}
+      className="confirm"
+      cancelText="Bekor qilish"
+      onOk={onConfirm}
+      okText={okayText || "Ha"}
+      onCancel={onCancel}
+    >
+      <h3 className="text-xl font-bold mb-3">Tasdiqlash</h3>
       <p className="text-lg">{children}</p>
     </Modal>
   );

@@ -33,14 +33,14 @@ const AdminsList = () => {
       dataIndex: "login",
     },
     {
-      title: "Creation date",
+      title: "Yaratilgan sana",
       dataIndex: "createdAt",
       render: (date: string) => new Date(date).toLocaleDateString("en-EN"),
     },
     {
       render: ({ id, login }: IAdmin) => (
         <Flex className="items-center justify-end gap-3">
-          <IconButton onClick={() => deleteItem(id, login, "asd")}>
+          <IconButton onClick={() => deleteItem(id, login)}>
             <TrashIcon />
           </IconButton>
         </Flex>

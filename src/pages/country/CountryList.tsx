@@ -10,6 +10,7 @@ import { ColumnsType } from "antd/es/table";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { useEffect } from "react";
 import { ICountry } from "src/types";
+import parse from "html-react-parser";
 
 interface Props {
   onEdit: (data: ICountry) => void;
@@ -33,13 +34,19 @@ const CountryList = ({ onEdit }: Props) => {
       render: (_, __, index) => <div className="text-center">{index + data.pagination.skip + 1}</div>,
     },
     {
-      title: "Country",
+      title: "Rasm",
+      dataIndex: "image",
+      width: "128px",
+      render: (image: string) => <img src={image} alt="country" className="max-w-full w-24 h-24 object-cover" />,
+    },
+    {
+      title: "Mamlakat nomi",
       dataIndex: "name",
     },
     {
-      title: "Creation date",
-      dataIndex: "createdAt",
-      render: (date: string) => new Date(date).toLocaleDateString("en-EN"),
+      title: "Tavsif",
+      dataIndex: "description",
+      render: (desc: string) => parse(desc),
     },
     {
       render: (country: ICountry) => (
@@ -47,7 +54,7 @@ const CountryList = ({ onEdit }: Props) => {
           <IconButton onClick={() => onEdit(country)}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => deleteItem(country.id, country.name, "asd")}>
+          <IconButton onClick={() => deleteItem(country.id, country.name)}>
             <TrashIcon />
           </IconButton>
         </Flex>
