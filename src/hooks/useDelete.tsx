@@ -1,4 +1,4 @@
-import { Modal, message } from "antd";
+import { message, Modal } from "antd";
 import { useQueryClient } from "react-query";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 

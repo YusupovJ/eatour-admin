@@ -1,5 +1,5 @@
 import { useState, useId, useEffect } from "react";
-import { Form, Modal, Upload, message } from "antd";
+import { Form, message, Modal, Upload } from "antd";
 import type { FormInstance, UploadFile } from "antd";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 import { urls } from "@constants/urls";
@@ -29,8 +29,7 @@ const FileUploader = ({ form, name }: IImageUpload) => {
   const { mutate, isLoading: uploadLoading } = useCreateMedia<FormData, IImageUploadResponse>(urls.media.create);
 
   const { mutate: deleteMutate, isLoading: deleteLoading } = useDeleteMedia<IDeleteMediaPost>(urls.media.delete);
-
-  const { open: deleteModalOpen, openModal: deleteModalOnOpen, closeModal: deleteModalOnClose } = useModalView();
+  const [deleteModalOpen, deleteModalOnOpen, deleteModalOnClose] = useModalView();
   const [deleteKey, setDeleteKey] = useState<string | null>(null);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);

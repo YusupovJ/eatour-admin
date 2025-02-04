@@ -20,6 +20,9 @@ export interface IPagination {
 export interface IAdmin extends IRoot {
   login: string;
 }
+export interface ICountry extends IRoot {
+  name: string;
+}
 
 export interface IMenu {
   id: number;

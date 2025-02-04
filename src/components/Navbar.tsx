@@ -18,7 +18,7 @@ const Navbar: FC = () => {
           items={menuData.map((item) => {
             return {
               key: item.id,
-              label: <Link to={item.path}>{item.title}</Link>,
+              label: item.path ? <Link to={item.path}>{item.title}</Link> : <p>{item.title}</p>,
               icon: item.icon,
               children: item?.children?.map((el) => ({
                 type: "group",

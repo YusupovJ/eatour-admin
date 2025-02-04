@@ -17,15 +17,6 @@ const useGetList = <T>(key: string, url: string, config?: AxiosRequestConfig, op
   return useQuery(key, () => get(), options);
 };
 
-const useCustomGetQuery = <T>(key: string | [string, string], url: string) => {
-  const get = async () => {
-    const data = await Api.get<T>(url);
-    return data;
-  };
-
-  return useQuery(key, get);
-};
-
 const useCreate = <T, U, V = Error>(url: string) => {
   return useMutation<IApiResponse<U>, AxiosError<V>, T>(async (body) => {
     const data = await Api.post<void, IApiResponse<U>>(url, body);
@@ -33,9 +24,9 @@ const useCreate = <T, U, V = Error>(url: string) => {
   });
 };
 
-const useUpdate = <T, U>() => {
-  return useMutation(async ({ url, item }: IEditData<T>) => {
-    const data: U = await Api.patch(`${url}`, item);
+const useUpdate = <T, U, V = Error>() => {
+  return useMutation<IApiResponse<U>, AxiosError<V>, IEditData<T>>(async ({ url, item }) => {
+    const data: IApiResponse<U> = await Api.patch(url, item);
     return data;
   });
 };
@@ -70,4 +61,4 @@ const useDeleteMedia = <T>(url: string) => {
   });
 };
 
-export { useGetList, useCreate, useUpdate, useDeleteApi, useCustomGetQuery, useCreateMedia, useDeleteMedia };
+export { useGetList, useCreate, useUpdate, useDeleteApi, useCreateMedia, useDeleteMedia };

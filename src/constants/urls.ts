@@ -15,4 +15,11 @@ export const urls = {
     refresh: "/admin/refresh",
     delete: "/admin",
   },
+  country: {
+    create: "/country",
+    getAll: "/country",
+    remove: "/country",
+    update: (id: number) => `/country/${id}`,
+    getOne: (id: number) => `/country/${id}`,
+  },
 };
