@@ -5,6 +5,7 @@ export const urls = {
   media: {
     create: "/api/v1/aws",
     delete: "/api/v1/aws/delete",
+    multiple: "/api/v1/aws/multiple",
   },
   admin: {
     create: "/admin",

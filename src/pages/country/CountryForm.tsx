@@ -1,5 +1,6 @@
 import { useCreate, useUpdate } from "@api/index";
 import FileUploader from "@components/common/FileUploder";
+import TextEditor from "@components/common/TextEditor";
 import { KeysEnum } from "@constants/keys";
 import { urls } from "@constants/urls";
 import { IEditData } from "@hooks/useEditData";
@@ -7,8 +8,6 @@ import { Button, Drawer, Form, Input, message, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { ICountry } from "src/types";
 
 interface Props {
@@ -83,7 +82,7 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
             <Input placeholder="Mamlakat nomi" />
           </Form.Item>
           <Form.Item name="description" label="Tavsif" rules={[{ required: true, message: "Tavsifni kiriting" }]}>
-            <ReactQuill theme="snow" className="rounded" />
+            <TextEditor form={form} name="description" />
           </Form.Item>
           <Form.Item name="image">
             <FileUploader form={form} name="image" />

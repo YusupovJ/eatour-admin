@@ -10,7 +10,6 @@ import { ColumnsType } from "antd/es/table";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { useEffect } from "react";
 import { ICountry } from "src/types";
-import parse from "html-react-parser";
 
 interface Props {
   onEdit: (data: ICountry) => void;
@@ -43,11 +42,7 @@ const CountryList = ({ onEdit }: Props) => {
       title: "Mamlakat nomi",
       dataIndex: "name",
     },
-    {
-      title: "Tavsif",
-      dataIndex: "description",
-      render: (desc: string) => parse(desc),
-    },
+
     {
       render: (country: ICountry) => (
         <Flex className="items-center justify-end gap-3">

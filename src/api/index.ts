@@ -41,7 +41,7 @@ const useDeleteApi = <T>(url: string) => {
 // MediaApi
 const useCreateMedia = <T, U, V = Error>(url: string) => {
   return useMutation<U, AxiosError<V>, T>(async (body) => {
-    const data: AxiosResponse<U> = await MediaApi.post(`${url}`, body, {
+    const data: AxiosResponse<U> = await MediaApi.post(url, body, {
       headers: {
         "x-auth-key": handleEncrypted(),
       },
