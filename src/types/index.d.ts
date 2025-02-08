@@ -33,6 +33,32 @@ export interface IPlace extends IRoot {
   country: ICountry;
 }
 
+export interface IRoute {
+  title: string;
+  description: string;
+}
+
+export interface IExtraPrice {
+  title: string;
+  value: number | null;
+}
+
+export interface ITour extends IRoot {
+  title: string;
+  description: string;
+  images: string[];
+  includes: string[];
+  excludes: string[];
+  routes: IRoute[];
+  bookings: number;
+  views: number;
+  price: number;
+  pricePerAdult: number;
+  pricePerChild: number;
+  place: IPlace;
+  extraPrices: [];
+}
+
 export interface IMenu {
   id: number;
   path: string;

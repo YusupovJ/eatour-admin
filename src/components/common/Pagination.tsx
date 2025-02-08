@@ -20,7 +20,7 @@ const CustomPagination: FC<IPagination> = ({ total, limit }) => {
     setSearchParams(searchParams);
   };
   return (
-    <div className="flex justify-center my-[20px]">
+    <div className="flex justify-center mt-[20px]">
       <Pagination total={total} hideOnSinglePage current={currentPage} onChange={handleChange} pageSize={limit} />
     </div>
   );

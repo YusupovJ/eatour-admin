@@ -105,7 +105,11 @@ const PlaceForm = ({ onClose, open, editData }: Props) => {
             <TextEditor form={form} name="description" initialValue={editData.data?.description} />
           </Form.Item>
           <Form.Item name="image" rules={[{ required: true, message: "Rasmni kiriting" }]}>
-            <FileUploader form={form} name="image" />
+            <FileUploader
+              form={form}
+              name="image"
+              defaultFiles={editData.data?.image ? [editData.data?.image] : undefined}
+            />
           </Form.Item>
           <Space className="mt-5">
             <Button htmlType="reset" onClick={onClose}>

@@ -30,4 +30,11 @@ export const urls = {
     update: (id: number) => `/place/${id}`,
     getOne: (id: number) => `/place/${id}`,
   },
+  tour: {
+    create: "/tour",
+    getAll: "/tour",
+    remove: "/tour",
+    update: (id: number) => `/tour/${id}`,
+    getOne: (id: number) => `/tour/${id}`,
+  },
 };
