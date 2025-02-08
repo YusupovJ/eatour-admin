@@ -23,4 +23,11 @@ export const urls = {
     update: (id: number) => `/country/${id}`,
     getOne: (id: number) => `/country/${id}`,
   },
+  place: {
+    create: "/place",
+    getAll: "/place",
+    remove: "/place",
+    update: (id: number) => `/place/${id}`,
+    getOne: (id: number) => `/place/${id}`,
+  },
 };

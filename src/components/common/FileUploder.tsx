@@ -3,9 +3,8 @@ import { useCreateMedia, useDeleteMedia } from "@api/index";
 import { urls } from "@constants/urls";
 import type { FormInstance, UploadFile, UploadProps } from "antd";
 import { message, Upload } from "antd";
-import { useWatch } from "antd/es/form/Form";
 import { RcFile } from "antd/es/upload";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const { Dragger } = Upload;
 
@@ -46,6 +45,7 @@ const FileUploader = ({ form, multiple = false, name }: Props) => {
         onSuccess(data) {
           if (data.key) {
             setFileList(fileList.filter((file) => file.key !== data.key));
+            form.resetFields(["image"]);
           }
         },
       },
@@ -95,41 +95,6 @@ const FileUploader = ({ form, multiple = false, name }: Props) => {
     },
     fileList,
   };
-
-  const url = useWatch(name, form);
-
-  useEffect(() => {
-    if (typeof url === "string") {
-      const paths = url.split("/");
-      const key = paths[paths.length - 2] + "/" + paths[paths.length - 1];
-
-      setFileList([
-        {
-          name: "image.jpeg",
-          key,
-          uid: Date.now().toString(),
-          status: "done",
-        },
-      ]);
-      return;
-    }
-
-    if (Array.isArray(url)) {
-      setFileList(
-        url.map((url) => {
-          const paths = url.split("/");
-          const key = paths[paths.length - 2] + "/" + paths[paths.length - 1];
-
-          return {
-            name: "image.jpeg",
-            key,
-            uid: Date.now().toString(),
-            status: "done",
-          };
-        }),
-      );
-    }
-  }, [url]);
 
   return (
     <Dragger {...props}>

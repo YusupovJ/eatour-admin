@@ -14,7 +14,7 @@ const useGetList = <T>(key: string, url: string, config?: AxiosRequestConfig, op
     const data = await Api.get<void, IApiResponse<T>>(url, config);
     return data;
   };
-  return useQuery(key, () => get(), options);
+  return useQuery<IApiResponse<T>>(key, () => get(), options);
 };
 
 const useCreate = <T, U, V = Error>(url: string) => {

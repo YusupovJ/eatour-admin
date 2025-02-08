@@ -26,6 +26,13 @@ export interface ICountry extends IRoot {
   image: string;
 }
 
+export interface IPlace extends IRoot {
+  name: string;
+  description: string;
+  image: string;
+  country: ICountry;
+}
+
 export interface IMenu {
   id: number;
   path: string;

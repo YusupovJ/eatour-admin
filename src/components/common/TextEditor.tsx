@@ -3,7 +3,6 @@ import TextAlign from "@tiptap/extension-text-align";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { FormInstance } from "antd";
-import { useWatch } from "antd/es/form/Form";
 import { useEffect } from "react";
 
 interface MenuBarProps {
@@ -110,9 +109,10 @@ const MenuBar = ({ editor }: MenuBarProps) => {
 interface Props {
   form: FormInstance;
   name: string;
+  initialValue?: string;
 }
 
-const TextEditor = ({ form, name }: Props) => {
+const TextEditor = ({ form, name, initialValue }: Props) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -126,11 +126,11 @@ const TextEditor = ({ form, name }: Props) => {
     },
   });
 
-  const content = useWatch(name, form);
-
   useEffect(() => {
-    editor?.commands.insertContent(content);
-  }, [content]);
+    if (initialValue) {
+      editor?.commands.insertContent(initialValue);
+    }
+  }, [initialValue]);
 
   return (
     <>

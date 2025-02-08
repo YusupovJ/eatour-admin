@@ -3,6 +3,7 @@ import AdminsPage from "@pages/admins";
 import CountryPage from "@pages/country";
 import Login from "@pages/LoginPage";
 import NotFoundPage from "@pages/NotFoundPage";
+import PlacePage from "@pages/place";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "/country",
         element: <CountryPage />,
+      },
+      {
+        path: "/city",
+        element: <PlacePage />,
       },
     ],
   },

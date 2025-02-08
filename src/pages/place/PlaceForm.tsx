@@ -1,54 +1,62 @@
-import { useCreate, useUpdate } from "@api/index";
+import { useCreate, useGetList, useUpdate } from "@api/index";
 import FileUploader from "@components/common/FileUploder";
 import TextEditor from "@components/common/TextEditor";
 import { KeysEnum } from "@constants/keys";
 import { urls } from "@constants/urls";
 import { IEditData } from "@hooks/useEditData";
-import { Button, Drawer, Form, Input, message, Space } from "antd";
+import { Button, Drawer, Form, Input, message, Select, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useQueryClient } from "react-query";
-import { ICountry } from "src/types";
+import { ICountry, IPlace } from "src/types";
 
 interface Props {
   onClose: () => void;
   open: boolean;
-  editData: IEditData<ICountry>;
+  editData: IEditData<IPlace>;
 }
 
-interface ICountryDto {
+interface IPlaceDto {
   name: string;
+  description: string;
+  image: string;
+  countryId: number;
 }
 
-const CountryForm = ({ onClose, open, editData }: Props) => {
-  const { mutate: create } = useCreate<ICountryDto, ICountry>(urls.country.create);
-  const { mutate: update } = useUpdate<ICountryDto, ICountry>();
+const PlaceForm = ({ onClose, open, editData }: Props) => {
+  const { mutate: create } = useCreate<IPlaceDto, IPlace>(urls.place.create);
+  const { mutate: update } = useUpdate<IPlaceDto, IPlace>();
+  const { data: countries } = useGetList<ICountry[]>(KeysEnum.GET_ALL_COUNTRIES, urls.country.getAll);
+
   const queryClient = useQueryClient();
-  const [form] = useForm<ICountry>();
+  const [form] = useForm<IPlaceDto>();
 
   const closeHandler = () => {
     onClose();
-    form.resetFields(["name", "image", "description"]);
+    form.resetFields(["name", "image", "description", "countryId"]);
     editData.setEditData(null);
   };
 
   useEffect(() => {
     if (editData.data) {
-      form.setFieldsValue(editData.data);
+      form.setFieldsValue({
+        ...editData.data,
+        countryId: editData.data.country.id,
+      });
     }
   }, [editData]);
 
-  const onSubmit = (values: ICountryDto) => {
+  const onSubmit = (values: IPlaceDto) => {
     if (editData.data) {
       update(
         {
-          url: urls.country.update(editData.data.id),
+          url: urls.place.update(editData.data.id),
           item: values,
         },
         {
           onSuccess() {
-            message.success("Mamlakat yangilandi!");
-            queryClient.refetchQueries(KeysEnum.GET_ALL_COUNTRIES);
+            message.success("Shahar yangilandi!");
+            queryClient.refetchQueries(KeysEnum.GET_ALL_CITIES);
             closeHandler();
           },
         },
@@ -57,12 +65,21 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
     }
     create(values, {
       onSuccess: () => {
-        message.success("Mamlakat yaratildi!");
-        queryClient.refetchQueries(KeysEnum.GET_ALL_COUNTRIES);
+        message.success("Shahar yaratildi!");
+        queryClient.refetchQueries(KeysEnum.GET_ALL_CITIES);
         closeHandler();
       },
     });
   };
+
+  const options = useMemo(
+    () =>
+      countries?.data.map((country) => ({
+        value: country.id,
+        label: country.name,
+      })),
+    [countries],
+  );
 
   return (
     <>
@@ -78,8 +95,11 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
         }}
       >
         <Form layout="vertical" form={form} onFinish={onSubmit}>
-          <Form.Item name="name" label="Mamlakat nomi" rules={[{ required: true, message: "Nomini kiriting" }]}>
-            <Input placeholder="Mamlakat nomi" />
+          <Form.Item name="name" label="Shahar nomi" rules={[{ required: true, message: "Nomini kiriting" }]}>
+            <Input placeholder="Shahar nomi" />
+          </Form.Item>
+          <Form.Item name="countryId" label="Mamlakat" rules={[{ required: true, message: "Mamlakatni kiriting" }]}>
+            <Select options={options} placeholder="Mamlakat" />
           </Form.Item>
           <Form.Item name="description" label="Tavsif" rules={[{ required: true, message: "Tavsifni kiriting" }]}>
             <TextEditor form={form} name="description" initialValue={editData.data?.description} />
@@ -101,4 +121,4 @@ const CountryForm = ({ onClose, open, editData }: Props) => {
   );
 };
 
-export default CountryForm;
+export default PlaceForm;
