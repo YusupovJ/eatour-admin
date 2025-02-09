@@ -26,27 +26,27 @@ const MetaForm = ({ form }: Props) => {
     <>
       <Row gutter={10}>
         <Col span={12}>
-          <Form.Item name="title">
+          <Form.Item name="title" rules={[{ required: true, message: "Sarlavhani kiriting" }]}>
             <Input placeholder="Sarlavha" size="large" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="placeId">
+          <Form.Item name="placeId" rules={[{ required: true, message: "Shaharni aanlang" }]}>
             <Select options={options} placeholder="Shahar" size="large" />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Form.Item name="description">
-            <TextEditor name="description" form={form} />
+          <Form.Item name="description" rules={[{ required: true, message: "Tavsif kiriting" }]}>
+            <TextEditor name="description" form={form} initialValue={form.getFieldValue("description")} />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Form.Item name="images">
-            <FileUploader name="images" form={form} multiple />
+          <Form.Item name="images" rules={[{ required: true, message: "Hech bomasa bir rasm tanlang" }]}>
+            <FileUploader name="images" form={form} multiple defaultFiles={form.getFieldValue("images")} />
           </Form.Item>
         </Col>
       </Row>

@@ -1,10 +1,15 @@
 import Block from "@components/Block";
-import { Button, Flex, Form } from "antd";
+import { Button, Flex, Form, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { IExtraPrice, IRoute } from "src/types";
+import { IExtraPrice, IRoute, ITour } from "src/types";
 import MetaForm from "./MetaForm";
 import PriceForm from "./PriceForm";
 import AmenitiesForm from "./AmenitiesForm";
+import RouteForm from "./RouteForm";
+import { useCreate, useUpdate } from "@api/index";
+import { urls } from "@constants/urls";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 interface ITourDto {
   title: string;
@@ -22,9 +27,42 @@ interface ITourDto {
 
 const UpsertTourPage = () => {
   const [form] = useForm<ITourDto>();
+  const { mutate: create } = useCreate<ITourDto, ITour>(urls.tour.create);
+  const { mutate: update } = useUpdate<ITourDto, ITour>();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const tourId = searchParams.get("tourId");
+
+    if (tourId) {
+      const initialValues = JSON.parse(localStorage.getItem("tour") || "");
+      if (typeof initialValues === "object") {
+        form.setFieldsValue(initialValues);
+      }
+    } else {
+      localStorage.removeItem("tour");
+      form.resetFields();
+    }
+  }, [searchParams]);
 
   const onSubmit = (values: ITourDto) => {
-    console.log(values);
+    const tourId = searchParams.get("tourId");
+    if (tourId) {
+      update(
+        { url: urls.tour.update(+tourId), item: values },
+        {
+          onSuccess() {
+            message.success("Tur tahrirlandi!");
+          },
+        },
+      );
+      return;
+    }
+    create(values, {
+      onSuccess() {
+        message.success("Tur yaratildi!");
+      },
+    });
   };
 
   return (
@@ -48,7 +86,10 @@ const UpsertTourPage = () => {
         <Block title="O'z ichiga oladi / olmaydi">
           <AmenitiesForm form={form} />
         </Block>
-        <Flex className="justify-end">
+        <Block title="Marshrut">
+          <RouteForm form={form} />
+        </Block>
+        <Flex className="justify-end mb-10">
           <Button htmlType="submit" type="primary">
             Yuborish
           </Button>

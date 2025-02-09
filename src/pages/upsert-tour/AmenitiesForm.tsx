@@ -1,4 +1,5 @@
 import { Button, Col, Form, FormInstance, Input, Row } from "antd";
+import { useWatch } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 const AmenitiesForm = ({ form }: Props) => {
   const [includes, setIncludes] = useState<string[]>([""]);
   const [excludes, setExcludes] = useState<string[]>([""]);
+  const [includesChange, setIncludesChange] = useState(false);
+  const [excludesChange, setExcludesChange] = useState(false);
 
   const addIncludes = () => {
     setIncludes([...includes, ""]);
@@ -41,6 +44,24 @@ const AmenitiesForm = ({ form }: Props) => {
   useEffect(() => {
     form.setFieldValue("excludes", excludes.filter(Boolean));
   }, [excludes]);
+
+  const defaultIncludes = useWatch("includes", form);
+
+  useEffect(() => {
+    if (!includesChange && defaultIncludes?.length > 0) {
+      setIncludes(defaultIncludes);
+      setIncludesChange(true);
+    }
+  }, [defaultIncludes]);
+
+  const defaultExcludes = useWatch("excludes", form);
+
+  useEffect(() => {
+    if (!excludesChange && defaultExcludes?.length > 0) {
+      setExcludes(defaultExcludes);
+      setExcludesChange(true);
+    }
+  }, [defaultExcludes]);
 
   return (
     <Row gutter={24}>

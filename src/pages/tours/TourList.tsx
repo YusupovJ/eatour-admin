@@ -9,10 +9,12 @@ import { Flex, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ITour } from "src/types";
 
 const TourList = () => {
   const [page] = usePagination();
+  const navigate = useNavigate();
   const { data, refetch } = useGetList<ITour[]>(KeysEnum.GET_ALL_TOURS, urls.tour.getAll, {
     params: { page, limit: 15 },
   });
@@ -21,6 +23,17 @@ const TourList = () => {
   useEffect(() => {
     refetch();
   }, [page]);
+
+  const onEdit = (tour: ITour) => {
+    localStorage.setItem(
+      "tour",
+      JSON.stringify({
+        ...tour,
+        placeId: tour.place.id,
+      }),
+    );
+    navigate(`/upsert-tour?tourId=${tour.id}`);
+  };
 
   const columns: ColumnsType<ITour> = [
     {
@@ -51,7 +64,7 @@ const TourList = () => {
     {
       render: (tour: ITour) => (
         <Flex className="items-center justify-end gap-3">
-          <IconButton>
+          <IconButton onClick={() => onEdit(tour)}>
             <EditIcon />
           </IconButton>
           <IconButton onClick={() => deleteItem(tour.id, tour.title)}>

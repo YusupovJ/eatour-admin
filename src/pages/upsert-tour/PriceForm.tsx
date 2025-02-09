@@ -1,4 +1,5 @@
 import { Button, Col, Form, FormInstance, Input, Row } from "antd";
+import { useWatch } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { IExtraPrice } from "src/types";
 
@@ -7,12 +8,22 @@ interface Props {
 }
 
 const PriceForm = ({ form }: Props) => {
+  const [changed, setChanged] = useState(false);
   const [extraPrices, setExtraPrices] = useState<IExtraPrice[]>([
     {
       title: "",
       value: null,
     },
   ]);
+
+  const defaultValues = useWatch("extraPrices", form);
+
+  useEffect(() => {
+    if (!changed && defaultValues) {
+      setExtraPrices(defaultValues);
+      setChanged(true);
+    }
+  }, [defaultValues]);
 
   const addField = () => {
     setExtraPrices([...extraPrices, { title: "", value: null }]);
@@ -43,17 +54,25 @@ const PriceForm = ({ form }: Props) => {
     <>
       <Row gutter={10}>
         <Col span={8}>
-          <Form.Item name="price" label="Tur narxi">
+          <Form.Item name="price" label="Tur narxi" rules={[{ required: true, message: "Narxni kiriting" }]}>
             <Input size="large" type="number" min={0} placeholder="Tur narxi" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="pricePerChild" label="Bir bola uchun narx">
+          <Form.Item
+            name="pricePerChild"
+            label="Bir bola uchun narx"
+            rules={[{ required: true, message: "Narxni kiriting" }]}
+          >
             <Input size="large" type="number" min={0} placeholder="Bir bola uchun narx" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="pricePerAdult" label="Kattalar uchun narx">
+          <Form.Item
+            name="pricePerAdult"
+            label="Kattalar uchun narx"
+            rules={[{ required: true, message: "Narxni kiriting" }]}
+          >
             <Input size="large" type="number" min={0} placeholder="Kattalar uchun narx" />
           </Form.Item>
         </Col>
@@ -69,6 +88,7 @@ const PriceForm = ({ form }: Props) => {
               <Input
                 placeholder="Servis nomi"
                 size="large"
+                value={extraPrices[index].title}
                 onChange={(e) => onChange(e.target.value, index, "title")}
               />
             </Col>
@@ -76,6 +96,7 @@ const PriceForm = ({ form }: Props) => {
               <Input
                 placeholder="Servis narxi"
                 size="large"
+                value={String(extraPrices[index].value)}
                 type="number"
                 min={0}
                 onChange={(e) => onChange(+e.target.value, index, "value")}
