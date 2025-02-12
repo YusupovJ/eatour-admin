@@ -1,5 +1,5 @@
 import { InboxOutlined } from "@ant-design/icons";
-import { useCreateMedia, useDeleteMedia } from "@api/index";
+import { useCreateMedia } from "@api/index";
 import { urls } from "@constants/urls";
 import type { FormInstance, UploadFile, UploadProps } from "antd";
 import { message, Upload } from "antd";
@@ -23,10 +23,6 @@ interface IFile {
   project: string;
 }
 
-interface IKey {
-  key: string;
-}
-
 interface IUpload extends UploadFile {
   key: string;
   status?: UploadFileStatus;
@@ -39,7 +35,6 @@ const extractKey = (url: string): string => {
 
 const FileUploader = ({ form, multiple = false, name, defaultFiles = [] }: Props) => {
   const { mutate: upload } = useCreateMedia<FormData, IFile>(urls.media.create);
-  const { mutate: remove } = useDeleteMedia<IKey>(urls.media.delete);
   const [fileList, setFileList] = useState<IUpload[]>([]);
 
   useEffect(() => {
@@ -61,18 +56,10 @@ const FileUploader = ({ form, multiple = false, name, defaultFiles = [] }: Props
       message.error("Fayl o'chirishda xatolik");
       return;
     }
-    remove(
-      { key },
-      {
-        onSuccess(data) {
-          if (data.key) {
-            const updatedList = fileList.filter((file) => file.key !== data.key);
-            setFileList(updatedList);
-            form.setFieldValue(name, multiple ? updatedList.map((file) => file.url) : undefined);
-          }
-        },
-      },
-    );
+
+    const updatedList = fileList.filter((file) => file.key !== key);
+    setFileList(updatedList);
+    form.setFieldValue(name, multiple ? updatedList.map((file) => file.url) : undefined);
   };
 
   const onUpload = (file: RcFile) => {
