@@ -10,10 +10,11 @@ import { useCreate, useUpdate } from "@api/index";
 import { urls } from "@constants/urls";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useTourStore } from "@context/store/tour";
 
 interface ITourDto {
   title: string;
-  desciprtion: string;
+  description: string;
   images: string[];
   includes: string[];
   excludes: string[];
@@ -30,20 +31,18 @@ const UpsertTourPage = () => {
   const { mutate: create } = useCreate<ITourDto, ITour>(urls.tour.create);
   const { mutate: update } = useUpdate<ITourDto, ITour>();
   const [searchParams] = useSearchParams();
+  const { tour, setTour } = useTourStore();
 
   useEffect(() => {
     const tourId = searchParams.get("tourId");
 
-    if (tourId) {
-      const initialValues = JSON.parse(localStorage.getItem("tour") || "");
-      if (typeof initialValues === "object") {
-        form.setFieldsValue(initialValues);
-      }
+    if (tourId && tour) {
+      form.setFieldsValue(tour);
     } else {
-      localStorage.removeItem("tour");
+      setTour(null);
       form.resetFields();
     }
-  }, [searchParams]);
+  }, [searchParams, tour]);
 
   const onSubmit = (values: ITourDto) => {
     const tourId = searchParams.get("tourId");
@@ -53,6 +52,7 @@ const UpsertTourPage = () => {
         {
           onSuccess() {
             message.success("Tur tahrirlandi!");
+            setTour(values);
           },
         },
       );
@@ -61,6 +61,7 @@ const UpsertTourPage = () => {
     create(values, {
       onSuccess() {
         message.success("Tur yaratildi!");
+        setTour(values);
       },
     });
   };
@@ -75,6 +76,19 @@ const UpsertTourPage = () => {
         initialValues={{
           includes: [],
           excludes: [],
+          routes: [
+            {
+              title: "",
+              description: "",
+            },
+          ],
+          extraPrices: [
+            {
+              title: "",
+              value: null,
+            },
+          ],
+          images: [],
         }}
       >
         <Block title="Ma'lumotlar">

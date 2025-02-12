@@ -3,6 +3,7 @@ import IconButton from "@components/common/IconButton";
 import CustomPagination from "@components/common/Pagination";
 import { KeysEnum } from "@constants/keys";
 import { urls } from "@constants/urls";
+import { useTourStore } from "@context/store/tour";
 import useDelete from "@hooks/useDelete";
 import usePagination from "@hooks/usePagination";
 import { Flex, Table } from "antd";
@@ -18,6 +19,7 @@ const TourList = () => {
   const { data, refetch } = useGetList<ITour[]>(KeysEnum.GET_ALL_TOURS, urls.tour.getAll, {
     params: { page, limit: 15 },
   });
+  const { setTour } = useTourStore();
   const { deleteItem } = useDelete(urls.tour.remove, KeysEnum.GET_ALL_TOURS);
 
   useEffect(() => {
@@ -25,13 +27,10 @@ const TourList = () => {
   }, [page]);
 
   const onEdit = (tour: ITour) => {
-    localStorage.setItem(
-      "tour",
-      JSON.stringify({
-        ...tour,
-        placeId: tour.place.id,
-      }),
-    );
+    setTour({
+      ...tour,
+      placeId: tour.place.id,
+    });
     navigate(`/upsert-tour?tourId=${tour.id}`);
   };
 
