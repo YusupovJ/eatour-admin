@@ -6,6 +6,7 @@ import NotFoundPage from "@pages/NotFoundPage";
 import PlacePage from "@pages/place";
 import TourPage from "@pages/tours";
 import UpsertTourPage from "@pages/upsert-tour";
+import TestimonialPage from "@pages/testimonial";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/upsert-tour",
         element: <UpsertTourPage />,
+      },
+      {
+        path: "/testimonials",
+        element: <TestimonialPage />,
       },
     ],
   },

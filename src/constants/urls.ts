@@ -37,4 +37,11 @@ export const urls = {
     update: (id: number) => `/tour/${id}`,
     getOne: (id: number) => `/tour/${id}`,
   },
+  testimonial: {
+    create: "/testimonial",
+    getAll: "/testimonial",
+    remove: "/testimonial",
+    update: (id: number) => `/testimonial/${id}`,
+    getOne: (id: number) => `/testimonial/${id}`,
+  },
 };

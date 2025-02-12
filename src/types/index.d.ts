@@ -26,6 +26,14 @@ export interface ICountry extends IRoot {
   image: string;
 }
 
+export interface ITestimonial extends IRoot {
+  fullName: string;
+  title: string;
+  content: string;
+  avatar: string;
+  rating: number;
+}
+
 export interface IPlace extends IRoot {
   name: string;
   description: string;
